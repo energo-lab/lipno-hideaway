@@ -3,6 +3,6 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/lipno-hideaway/',,
+  base: '/lipno-hideaway/',
   build: { outDir: 'dist', sourcemap: false },
 });
