@@ -1,8 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
 
-const url = import.meta.env.VITE_SUPABASE_URL || '';
-const key = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 export const supabase = (url && key) ? createClient(url, key) : null;
 export const isConnected = () => !!supabase;
-export const STORAGE_URL = url ? `${url}/storage/v1/object/public/gallery/` : '';
+export const STORAGE_URL = url ? url + '/storage/v1/object/public/gallery/' : '';
+```
+
+Uložte (Typ souboru: Všechny soubory, název: `supabase.js`) do:
+```
+C:\Users\ASUS\Downloads\lipno-hideaway\lipno-hideaway\src\lib\
