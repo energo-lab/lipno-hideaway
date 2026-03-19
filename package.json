@@ -2,8 +2,7 @@
   "name": "lipno-hideaway",
   "version": "1.0.0",
   "private": true,
-
-    "scripts": {
+  "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start"
@@ -13,7 +12,7 @@
     "@supabase/auth-helpers-nextjs": "^0.15.0",
     "@supabase/supabase-js": "^2.45.0",
     "lucide-react": "^0.383.0",
-    "next": "^16.2.0",
+    "next": "^14.2.35",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "recharts": "^2.12.0",
@@ -29,4 +28,3 @@
     "vite": "^5.4.0"
   }
 }
-

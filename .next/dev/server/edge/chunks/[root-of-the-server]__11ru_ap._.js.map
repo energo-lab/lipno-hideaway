@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 16, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/middleware.ts"],"sourcesContent":["import { NextRequest, NextResponse } from 'next/server'\r\nexport function middleware(req: NextRequest) { return NextResponse.next() }\r\nexport const config = { matcher: ['/admin/:path*'] }\r\n"],"names":["middleware","req","next","config","matcher"],"mappings":";;;;;;AAAA;AAAA;;AACO,SAASA,WAAWC,GAAgB;IAAI,OAAO,6MAAY,CAACC,IAAI;AAAG;AACnE,MAAMC,SAAS;IAAEC,SAAS;QAAC;KAAgB;AAAC"}}]
-}
