@@ -1,20 +1,2 @@
-export async function createPayment(params: { price: number; currency: string; label: string; refId: string; email: string; returnUrl: string; notifUrl: string }) {
-  const body = new URLSearchParams({
-    merchant: process.env.COMGATE_MERCHANT_ID!,
-    secret: process.env.COMGATE_SECRET!,
-    price: String(params.price * 100),
-    curr: params.currency,
-    label: params.label,
-    refId: params.refId,
-    email: params.email,
-    returnUrl: params.returnUrl,
-    notifUrl: params.notifUrl,
-    method: 'ALL',
-    prepareOnly: 'true',
-  })
-  const res = await fetch('https://payments.comgate.cz/v1.0/create', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body })
-  const text = await res.text()
-  const result = Object.fromEntries(new URLSearchParams(text))
-  if (result.code !== '0') throw new Error(result.message || 'Comgate error')
-  return result
-}
+export async function comgateCreatePayment(params:{price:number;currency:string;label:string;refId:string;email:string;returnUrl:string;notifUrl:string}){const body=new URLSearchParams({merchant:process.env.COMGATE_MERCHANT_ID!,secret:process.env.COMGATE_SECRET!,price:String(params.price*100),curr:params.currency,label:params.label,refId:params.refId,email:params.email,returnUrl:params.returnUrl,notifUrl:params.notifUrl,method:"ALL",prepareOnly:"true"});const res=await fetch("https://payments.comgate.cz/v1.0/create",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body});const text=await res.text();const result=Object.fromEntries(new URLSearchParams(text));if(result.code!=="0")throw new Error(result.message||"Comgate error");return result}
+export const createPayment=comgateCreatePayment;
