@@ -7,8 +7,8 @@ import {
   checkRateLimit, rateLimitResponse, getClientIp,
   sanitizeBookingInput, scanRequestForAttacks,
   logSecurityEvent, addSecurityHeaders,
-} from '@/lib/security'
-import { sendBookingConfirmation, sendAdminNotification } from '@/lib/email'
+} from '../../../lib/security'
+import { sendBookingConfirmation, sendAdminNotification } from '../../../lib/email'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
