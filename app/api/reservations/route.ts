@@ -126,11 +126,11 @@ export async function POST(req: NextRequest) {
       return addSecurityHeaders(NextResponse.json({ error: 'Chyba při vytváření rezervace' }, { status: 500 }))
 
     // Emaily async
-    Promise.allSettled([
+    const emailResults = await Promise.allSettled([
       sendBookingConfirmation(reservation),
       sendAdminNotification(reservation, `🆕 Rezervace – ${guest_name}`,
         `${guest_name} | ${check_in} – ${check_out} | ${total_price.toLocaleString()} Kč`),
-    ]).catch(e => console.error('[reservations] email error', e))
+    ]));console.error('[reservations] email results', JSON.stringify(emailResults))
 
     return addSecurityHeaders(NextResponse.json(
       { success: true, reservationId: reservation.id, totalPrice: total_price, depositAmount: deposit_amount, nights },
