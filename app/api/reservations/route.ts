@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
   // 7. Origin / CSRF
   const origin = req.headers.get('origin')
   const allowed = process.env.NEXT_PUBLIC_URL ?? 'https://www.lipno20.cz'
-  if (origin && origin !== allowed && !origin.endsWith(".vercel.app")) {
+  if (origin && origin !== allowed && !origin.endsWith(".vercel.app") && origin !== "http://localhost:3000") {
     logSecurityEvent('CSRF_INVALID', { ip, origin })
     return addSecurityHeaders(NextResponse.json({ error: 'Zakázaný požadavek' }, { status: 403 }))
   }
