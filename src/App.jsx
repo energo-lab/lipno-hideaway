@@ -76,11 +76,11 @@ const useLang = () => useContext(LangContext);
 const useT = () => { const { lang } = useLang(); return useCallback((p) => p.split(".").reduce((o,k)=>o?.[k], translations[lang]) || p, [lang]); };
 
 const SEASONS = [
-  { id:"top_summer", months:[7,8], price:12900, minNights:7, label:{cs:"TOP LÉTO",en:"PEAK SUMMER",de:"HOCHSOMMER",nl:"TOPZOMER"}, period:{cs:"Červenec – Srpen",en:"July – August",de:"Juli – August",nl:"Juli – Augustus"} },
-  { id:"top_winter", months:[2], price:10900, minNights:7, label:{cs:"TOP ZIMA",en:"PEAK WINTER",de:"HOCHWINTER",nl:"TOPWINTER"}, period:{cs:"Únor – pol. března",en:"Feb – mid March",de:"Feb – Mitte März",nl:"Feb – half maart"} },
-  { id:"winter", months:[1], price:7900, minNights:3, label:{cs:"ZIMA",en:"WINTER",de:"WINTER",nl:"WINTER"}, period:{cs:"Leden",en:"January",de:"Januar",nl:"Januari"} },
-  { id:"shoulder", months:[6,9], price:7900, minNights:3, label:{cs:"JARO / PODZIM",en:"SHOULDER",de:"NEBENSAISON",nl:"TUSSENSEIZOEN"}, period:{cs:"Červen, Září",en:"June, Sept",de:"Juni, Sept",nl:"Juni, Sept"} },
-  { id:"off_shoulder", months:[5,10], price:6500, minNights:2, label:{cs:"VEDLEJŠÍ",en:"LOW SEASON",de:"RANDSAISON",nl:"LAAGSEIZOEN"}, period:{cs:"Květen, Říjen",en:"May, October",de:"Mai, Okt",nl:"Mei, Okt"} },
+  { id:"top_summer", months:[7,8], price:7900, minNights:7, label:{cs:"TOP LÉTO",en:"PEAK SUMMER",de:"HOCHSOMMER",nl:"TOPZOMER"}, period:{cs:"Červenec – Srpen",en:"July – August",de:"Juli – August",nl:"Juli – Augustus"} },
+  { id:"top_winter", months:[2], price:7900, minNights:7, label:{cs:"TOP ZIMA",en:"PEAK WINTER",de:"HOCHWINTER",nl:"TOPWINTER"}, period:{cs:"Únor – pol. března",en:"Feb – mid March",de:"Feb – Mitte März",nl:"Feb – half maart"} },
+  { id:"winter", months:[1], price:6900, minNights:3, label:{cs:"ZIMA",en:"WINTER",de:"WINTER",nl:"WINTER"}, period:{cs:"Leden",en:"January",de:"Januar",nl:"Januari"} },
+  { id:"shoulder", months:[6,9], price:6500, minNights:3, label:{cs:"JARO / PODZIM",en:"SHOULDER",de:"NEBENSAISON",nl:"TUSSENSEIZOEN"}, period:{cs:"Červen, Září",en:"June, Sept",de:"Juni, Sept",nl:"Juni, Sept"} },
+  { id:"off_shoulder", months:[5,10], price:6000, minNights:2, label:{cs:"VEDLEJŠÍ",en:"LOW SEASON",de:"RANDSAISON",nl:"LAAGSEIZOEN"}, period:{cs:"Květen, Říjen",en:"May, October",de:"Mai, Okt",nl:"Mei, Okt"} },
   { id:"off", months:[4,11,12], price:5500, minNights:2, label:{cs:"MIMO SEZÓNU",en:"OFF SEASON",de:"AUSSERHALB",nl:"BUITEN SEIZOEN"}, period:{cs:"Dub, Lis, Pro*",en:"Apr, Nov, Dec*",de:"Apr, Nov, Dez*",nl:"Apr, Nov, Dec*"} },
   { id:"xmas", months:[], price:0, minNights:5, label:{cs:"VÁNOCE / SILVESTR",en:"CHRISTMAS / NYE",de:"WEIHNACHTEN",nl:"KERST / OUDJAAR"}, period:{cs:"20.12. – 1.1.",en:"Dec 20 – Jan 1",de:"20.12. – 1.1.",nl:"20 dec – 1 jan"} },
 ];
