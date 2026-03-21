@@ -24,6 +24,4 @@ export async function GET() {
   }))
 }
 
-export async function GET_OPTIONS() {
-  return new NextResponse(null, { status: 204 })
-}
+
