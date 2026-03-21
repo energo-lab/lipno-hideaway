@@ -1,4 +1,9 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
+  "/api/chat/route": "app/api/chat/route.js",
+  "/admin/reservations/page": "app/admin/reservations/page.js",
+  "/api/payment/create/route": "app/api/payment/create/route.js",
+  "/api/reservations/route": "app/api/reservations/route.js",
+  "/api/payment/webhook/route": "app/api/payment/webhook/route.js",
   "/page": "app/page.js"
 }
