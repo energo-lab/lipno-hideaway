@@ -1,1 +1,11 @@
-module.exports = {}
+module.exports = {
+  async headers() {
+    return [{
+      source: "/",
+      headers: [
+        { key: "Cache-Control", value: "no-store, must-revalidate" },
+        { key: "Pragma", value: "no-cache" },
+      ],
+    }]
+  },
+}
