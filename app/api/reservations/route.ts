@@ -128,9 +128,10 @@ export async function POST(req: NextRequest) {
     // Emaily async
     const emailResults = await Promise.allSettled([
       sendBookingConfirmation(reservation),
-      sendAdminNotification(reservation, `🆕 Rezervace – ${guest_name}`,
-        `${guest_name} | ${check_in} – ${check_out} | ${total_price.toLocaleString()} Kč`),
-    ]));console.error('[reservations] email results', JSON.stringify(emailResults))
+sendAdminNotification(reservation, `Rezervace - ${guest_name}`,
+  `${guest_name} | ${check_in} - ${check_out} | ${total_price.toLocaleString()} Kč`),
+]));
+console.error('[reservations] email results', JSON.stringify(emailResults))
 
     return addSecurityHeaders(NextResponse.json(
       { success: true, reservationId: reservation.id, totalPrice: total_price, depositAmount: deposit_amount, nights },
