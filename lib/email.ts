@@ -1,7 +1,7 @@
 import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
-const FROM = 'Lipno Hideaway <noreply@lipno20.cz>'
+const FROM = 'Lipno Hideaway <noreply@send.lipno20.cz>'
 
 export async function sendBookingConfirmation(reservation: Record<string, unknown>) {
   return resend.emails.send({
