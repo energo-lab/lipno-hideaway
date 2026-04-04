@@ -13,7 +13,7 @@ const SYSTEM_PROMPT = `Jsi přátelský asistent pro chatový widget na webu lip
 - Při dotazu na vzdálenosti vždy počítej od adresy Slupečná 298, Lipno nad Vltavou
 - Kapacita: 9 osob
 - 4 ložnice, 3 koupelny
-- Vybavení: garáž, Wi-Fi, gril, zahrada, terasa s výhledem na Lipenské jezero
+- Vybavení: garáž, Wi-Fi, gril, zahrada, terasa s výhledem na Lipenské jezero, plně vybavená kuchyně (nádobí, příbory, hrnce, spotřebiče – vše potřebné pro vaření)
 - Domácí zvířata: NEJSOU povolena
 - Kouření: v objektu zakázáno
 - Parkování: garáž + parkovací místo, vše v ceně
