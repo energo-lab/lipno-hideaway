@@ -143,6 +143,21 @@ console.error('[reservations] email results', JSON.stringify(emailResults));
   }
 }
 
-export async function GET()    { return new NextResponse(null, { status: 405 }) }
-export async function PUT()    { return new NextResponse(null, { status: 405 }) }
-export async function DELETE() { return new NextResponse(null, { status: 405 }) }
+export async function GET() {
+  const { data, error } = await supabase
+    .from('reservations')
+    .select('*')
+    .order('check_in', { ascending: false })
+  if (error) return addSecurityHeaders(NextResponse.json({ error: error.message }, { status: 500 }))
+  return addSecurityHeaders(NextResponse.json(data))
+}
+
+export async function PUT() { return new NextResponse(null, { status: 405 }) }
+
+export async function DELETE(req: NextRequest) {
+  const id = new URL(req.url).searchParams.get('id')
+  if (!id) return addSecurityHeaders(NextResponse.json({ error: 'Missing id' }, { status: 400 }))
+  const { error } = await supabase.from('reservations').delete().eq('id', id)
+  if (error) return addSecurityHeaders(NextResponse.json({ error: error.message }, { status: 500 }))
+  return addSecurityHeaders(NextResponse.json({ success: true }))
+}
