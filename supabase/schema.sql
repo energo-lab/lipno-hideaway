@@ -192,4 +192,4 @@ INSERT INTO settings (key, value) VALUES
   ('deposit_max', '10000'),
   ('bank_account', 'XXXX/XXXX'),
   ('contact_email', 'info@lipno20.cz'),
-  ('contact_phone', '+420 XXX XXX XXX');
+  ('contact_phone', '+420 724 150 664');

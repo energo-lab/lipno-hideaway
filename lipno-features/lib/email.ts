@@ -79,7 +79,7 @@ function bookingConfirmationHtml(r: Reservation): string {
   </div>
   <div class="footer">
     <p>Lipno Hideaway · <a href="https://www.lipno20.cz">lipno20.cz</a></p>
-    <p>📍 Lipno nad Vltavou · 📞 +420 000 000 000</p>
+    <p>📍 Lipno nad Vltavou · 📞 +420 724 150 664</p>
   </div>
 </div>
 </body>
