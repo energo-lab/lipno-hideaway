@@ -20,6 +20,10 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   const id = new URL(req.url).searchParams.get('id')
-  await supabase.from('blocked_dates').delete().eq('id', id)
+  if (!id || id === 'undefined' || id === 'null') {
+    return addSecurityHeaders(NextResponse.json({ error: 'Missing or invalid id' }, { status: 400 }))
+  }
+  const { error } = await supabase.from('blocked_dates').delete().eq('id', id)
+  if (error) return addSecurityHeaders(NextResponse.json({ error: error.message }, { status: 500 }))
   return addSecurityHeaders(NextResponse.json({ success: true }))
 }

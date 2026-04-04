@@ -16,7 +16,7 @@ export async function GET() {
 
   const { data: blocked } = await supabase
     .from('blocked_dates')
-    .select('date_from, date_to, reason')
+    .select('id, date_from, date_to, reason')
 
   return addSecurityHeaders(NextResponse.json({
     reservations: reservations || [],
