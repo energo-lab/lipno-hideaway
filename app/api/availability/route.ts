@@ -18,8 +18,9 @@ const supabase = createClient(
                           .from('blocked_dates')
                               .select('id, date_from, date_to, reason')
 
-                                return addSecurityHeaders(NextResponse.json({
-                                    reservations: reservations || [],
-                                        blocked: blocked || [],
-                                          }))
-                                          }
+const res = NextResponse.json({
+    reservations: reservations || [],
+    blocked: blocked || [],
+  })
+  res.headers.set('Cache-Control', 'no-store, max-age=0')
+  return addSecurityHeaders(res)                                          }
