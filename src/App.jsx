@@ -87,12 +87,12 @@ const SEASONS = [
 ];
 
 const ACTIVITIES = [
-  { icon:"ski", name:{cs:"Skiareál Lipno",en:"Lipno Ski Resort",de:"Skigebiet Lipno",nl:"Skigebied Lipno"}, dist:"900 m", season:"winter", img:"https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=300&fit=crop" },
-  { icon:"tree", name:{cs:"Stezka korunami stromů",en:"Treetop Walkway",de:"Baumkronenpfad",nl:"Boomtoppenpad"}, dist:"1,5 km", season:"both", img:"https://images.unsplash.com/photo-1448375240586-882707db888b?w=400&h=300&fit=crop" },
-  { icon:"waves", name:{cs:"Aquaworld Lipno",en:"Aquaworld Lipno",de:"Aquaworld Lipno",nl:"Aquaworld Lipno"}, dist:"1,8 km", season:"both", img:"https://images.unsplash.com/photo-1582653291997-079a1c04e5a1?w=400&h=300&fit=crop" },
-  { icon:"bike", name:{cs:"Cyklostezky",en:"Cycling trails",de:"Radwege",nl:"Fietspaden"}, dist:"u domu", season:"summer", img:"https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=400&h=300&fit=crop" },
-  { icon:"ship", name:{cs:"Lodní výlety",en:"Boat trips",de:"Bootsausflüge",nl:"Boottochten"}, dist:"2,6 km", season:"summer", img:"https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop" },
-  { icon:"mountain", name:{cs:"Pěší turistika",en:"Hiking",de:"Wandern",nl:"Wandelen"}, dist:"u domu", season:"summer", img:"https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&h=300&fit=crop" },
+    { icon:"ski", name:{cs:"Skiareál Lipno",en:"Lipno Ski Resort",de:"Skigebiet Lipno",nl:"Skigebied Lipno"}, dist:"900 m", season:"winter", img:"/img/skiareal.jpg", link:"https://www.lipno.info/zazitky/skiareal-lipno.html" },
+      { icon:"tree", name:{cs:"Stezka korunami stromů",en:"Treetop Walkway",de:"Baumkronenpfad",nl:"Boomtoppenpad"}, dist:"1,5 km", season:"both", img:"/img/stezka.jpg", link:"https://www.lipno.info/zazitky/stezka-korunami-stromu-lipno.html" },
+        { icon:"waves", name:{cs:"Aquaworld Lipno",en:"Aquaworld Lipno",de:"Aquaworld Lipno",nl:"Aquaworld Lipno"}, dist:"1,8 km", season:"both", img:"/img/aqua.jpg", link:"https://www.lipno.info/zazitky/aquaworld-lipno.html" },
+          { icon:"bike", name:{cs:"Cyklostezky",en:"Cycling trails",de:"Radwege",nl:"Fietspaden"}, dist:"u domu", season:"summer", img:"/img/cyklo.jpg", link:"https://www.lipno.info/zazitky/na-kole-ci-kolobezce.html" },
+            { icon:"ship", name:{cs:"Lodní výlety",en:"Boat trips",de:"Bootsausflüge",nl:"Boottochten"}, dist:"2,6 km", season:"summer", img:"/img/lod.jpg", link:"https://www.lipno.info/zazitky/vyhlidkove-plavby-parnikem.html" },
+              { icon:"mountain", name:{cs:"Pěší turistika",en:"Hiking",de:"Wandern",nl:"Wandelen"}, dist:"u domu", season:"summer", img:"/img/pesi.jpg", link:"https://www.lipno.info/infocentrum/pesi-vylety.html" },
 ];
 
 const DEMO_REVIEWS = [
