@@ -1,5 +1,5 @@
 // Právní dokumenty – Lipno Hideaway
-// Pronajímatel: Václav Přihoda, Slupečná 298, 382 78 Lipno nad Vltavou
+// Pronajímatel: LIPNO Hideaway s.r.o., Slupečná 298, 382 78 Lipno nad Vltavou
 // Aktualizace: leden 2026
 
 export const LEGAL_DOCS = {
@@ -11,7 +11,7 @@ export const LEGAL_DOCS = {
 <p class="mb-3 text-xs text-[#8A8278]">Informace o zpracování osobních údajů dle čl. 13 Nařízení (EU) 2016/679 (GDPR) a zák. č. 110/2019 Sb., o zpracování osobních údajů.</p>
 
 <h3 class="font-semibold text-[#1B2B22] mt-5 mb-2">1. Správce osobních údajů</h3>
-<p class="mb-3">Václav Přihoda<br/>Slupečná 298, 382 78 Lipno nad Vltavou<br/>E-mail: <a href="mailto:info@lipno20.cz" class="text-[#C4654A] underline">info@lipno20.cz</a><br/>Tel.: +420 724 150 664</p>
+<p class="mb-3">LIPNO Hideaway s.r.o.<br/>Slupečná 298, 382 78 Lipno nad Vltavou<br/>E-mail: <a href="mailto:info@lipno20.cz" class="text-[#C4654A] underline">info@lipno20.cz</a><br/>Tel.: +420 724 150 664</p>
 
 <h3 class="font-semibold text-[#1B2B22] mt-5 mb-2">2. Zpracovávané osobní údaje</h3>
 <p class="mb-3">V rámci rezervace a poskytování ubytovacích služeb zpracováváme tyto osobní údaje, které nám sami poskytnete: <strong>jméno a příjmení, e-mailová adresa, telefonní číslo, datum příjezdu a odjezdu, počet osob</strong> a dobrovolně uvedená poznámka k pobytu. Jiné osobní údaje nevyžadujeme a nezpracováváme.</p>
@@ -52,7 +52,7 @@ export const LEGAL_DOCS = {
     content: `
 <p class="mb-3 text-xs text-[#8A8278]">Tyto obchodní podmínky (dále jen „OP") upravují práva a povinnosti pronajímatele a nájemce při krátkodobém pronájmu rekreačního objektu dle zák. č. 89/2012 Sb. (občanský zákoník, zejm. § 2235 a násl.).</p>
 
-<p class="mb-4"><strong>Pronajímatel:</strong> Václav Přihoda, Slupečná 298, 382 78 Lipno nad Vltavou<br/>
+<p class="mb-4"><strong>Pronajímatel:</strong> LIPNO Hideaway s.r.o., Slupečná 298, 382 78 Lipno nad Vltavou<br/>
 E-mail: <a href="mailto:info@lipno20.cz" class="text-[#C4654A] underline">info@lipno20.cz</a> &nbsp;|&nbsp; Tel.: +420 724 150 664<br/>
 <strong>Objekt:</strong> Lipno Hideaway, Slupečná 298, 382 78 Lipno nad Vltavou (rekreační dům, max. kapacita 9 osob)</p>
 
@@ -92,7 +92,7 @@ E-mail: <a href="mailto:info@lipno20.cz" class="text-[#C4654A] underline">info@l
   cancellation: {
     title: "Storno podmínky",
     content: `
-<p class="mb-3 text-xs text-[#8A8278]">Storno podmínky jsou nedílnou součástí obchodních podmínek pronajímatele Václava Přihody a vztahují se na všechny rezervace rekreačního objektu Lipno Hideaway, Slupečná 298, 382 78 Lipno nad Vltavou.</p>
+<p class="mb-3 text-xs text-[#8A8278]">Storno podmínky jsou nedílnou součástí obchodních podmínek pronajímatele LIPNO Hideaway s.r.o. a vztahují se na všechny rezervace rekreačního objektu Lipno Hideaway, Slupečná 298, 382 78 Lipno nad Vltavou.</p>
 
 <h3 class="font-semibold text-[#1B2B22] mt-5 mb-3">Storno poplatky</h3>
 <div class="overflow-x-auto mb-4">
