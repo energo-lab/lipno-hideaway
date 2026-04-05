@@ -18,10 +18,12 @@ export async function GET() {
     .from('blocked_dates')
     .select('id, date_from, date_to, reason')
 
-  return addSecurityHeaders(NextResponse.json({
+  const res = NextResponse.json({
     reservations: reservations || [],
     blocked: blocked || [],
-  }))
+  })
+  res.headers.set('Cache-Control', 'no-store, max-age=0')
+  return addSecurityHeaders(res)
 }
 
 
