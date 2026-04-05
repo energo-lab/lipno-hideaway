@@ -163,7 +163,7 @@ function SocialSidebar() {
     { type: 'instagram', url: SOCIAL_LINKS.instagram, label: 'Instagram', color: '#E1306C' },
     { type: 'facebook', url: SOCIAL_LINKS.facebook, label: 'Facebook', color: '#1877F2' },
     { type: 'google', url: SOCIAL_LINKS.google, label: 'Google', color: '#4285F4' },
-    { type: 'tripadvisor', url: SOCIAL_LINKS.tripadvisor, label: 'TripAdvisor', color: '#34E0A1' },
+    
   ];
   return (
     <div className="fixed right-0 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-0.5">
