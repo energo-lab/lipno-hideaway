@@ -24,6 +24,4 @@ export async function GET() {
   })
   res.headers.set('Cache-Control', 'no-store, max-age=0')
   return addSecurityHeaders(res)
-}
-
-
+}

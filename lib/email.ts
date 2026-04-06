@@ -321,7 +321,7 @@ export async function sendBookingCancelled(reservation: Record<string, unknown>)
   return resend.emails.send({
     from: FROM,
     to: reservation.guest_email as string,
-    subject: 'Informace k vaší poptávce – Lipno Hideaway',
+    subject: 'Informace k va\u0161í popt\u00e1vce \u2013 Lipno Hideaway',
     html,
   })
 }
@@ -333,4 +333,4 @@ export async function sendAdminNotification(reservation: Record<string, unknown>
     subject,
     html: '<p>' + message + '</p>',
   })
-}
+} 
