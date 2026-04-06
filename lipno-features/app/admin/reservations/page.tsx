@@ -12,11 +12,11 @@ const supabase = createClient(
 )
 
 const STATUS_LABELS: Record<ReservationStatus, { label: string; color: string }> = {
-  pending:   { label: 'Čeká',      color: 'bg-yellow-100 text-yellow-800' },
+  pending:   { label: '\u010ceká',      color: 'bg-yellow-100 text-yellow-800' },
   confirmed: { label: 'Potvrzena', color: 'bg-blue-100 text-blue-800' },
   paid:      { label: 'Zaplacena', color: 'bg-green-100 text-green-800' },
-  cancelled: { label: 'Zrušena',   color: 'bg-red-100 text-red-800' },
-  completed: { label: 'Dokončena', color: 'bg-gray-100 text-gray-600' },
+  cancelled: { label: 'Zru\u0161ena',   color: 'bg-red-100 text-red-800' },
+  completed: { label: 'Dokon\u010dena', color: 'bg-gray-100 text-gray-600' },
 }
 
 function formatDate(iso: string) {
@@ -24,7 +24,15 @@ function formatDate(iso: string) {
 }
 
 function formatPrice(n: number) {
-  return n.toLocaleString('cs-CZ') + ' Kč'
+  return n.toLocaleString('cs-CZ') + ' K\u010d'
+}
+
+const CLEANING_FEE = 2300
+const CITY_TAX_PER_ADULT_PER_NIGHT = 50
+
+function getTotalWithFees(r: Reservation): number {
+  const cityTax = CITY_TAX_PER_ADULT_PER_NIGHT * r.adults * r.nights
+  return r.total_price + CLEANING_FEE + cityTax
 }
 
 export default function ReservationsPage() {
@@ -68,40 +76,35 @@ export default function ReservationsPage() {
     })
     const data = await res.json()
     if (data.paymentUrl) {
-      alert(`Platební odkaz:\n${data.paymentUrl}\n\nOdkaz byl odeslán hostovi.`)
-      // In production: send email with link
-    } else {
-      alert('Chyba: ' + data.error)
+      alert('Platební odkaz:\n' + data.paymentUrl + '\n\nOdkaz byl odeslán zákazníkovi emailem.')
     }
     setActionLoading(false)
   }
 
-  // Stats
+  // Stats — pouze zaplacené rezervace (paid, completed)
+  const paidReservations = reservations.filter(r => (['paid', 'completed'] as string[]).includes(r.status))
   const stats = {
-    total: reservations.length,
+    total: paidReservations.length,
     pending: reservations.filter(r => r.status === 'pending').length,
-    confirmed: reservations.filter(r => r.status === 'confirmed').length,
     paid: reservations.filter(r => r.status === 'paid').length,
-    revenue: reservations.filter(r => ['paid', 'completed'].includes(r.status)).reduce((s, r) => s + r.total_price, 0),
+    revenue: paidReservations.reduce((s, r) => s + getTotalWithFees(r), 0),
   }
 
   return (
     <div className="min-h-screen bg-stone-50 p-6">
       <div className="max-w-7xl mx-auto">
 
-        {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-stone-800">Rezervace</h1>
           <p className="text-stone-500 mt-1">Správa všech rezervací Lipno Hideaway</p>
         </div>
 
-        {/* Stats cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           {[
-            { label: 'Celkem', value: stats.total, color: 'bg-white' },
-            { label: 'Čeká', value: stats.pending, color: 'bg-yellow-50', badge: stats.pending > 0 },
+            { label: 'Potvrzeno', value: stats.total, color: 'bg-white' },
+            { label: '\u010ceká', value: stats.pending, color: 'bg-yellow-50', badge: stats.pending > 0 },
             { label: 'Zaplaceno', value: stats.paid, color: 'bg-green-50' },
-            { label: 'Příjmy', value: formatPrice(stats.revenue), color: 'bg-blue-50' },
+            { label: 'P\u0159íjmy', value: formatPrice(stats.revenue), color: 'bg-blue-50' },
           ].map(s => (
             <div key={s.label} className={`${s.color} rounded-xl p-4 shadow-sm border border-stone-100`}>
               <div className="text-2xl font-bold text-stone-800">{s.value}</div>
@@ -110,12 +113,11 @@ export default function ReservationsPage() {
           ))}
         </div>
 
-        {/* Filters */}
         <div className="flex flex-wrap gap-3 mb-6">
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder="Hledat hosta…"
+            placeholder="Hledat hosta\u2026"
             className="border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-700 w-48"
           />
           <div className="flex gap-2">
@@ -127,26 +129,25 @@ export default function ReservationsPage() {
                   filter === s ? 'bg-green-800 text-white' : 'bg-white text-stone-600 border border-stone-200 hover:border-green-800'
                 }`}
               >
-                {s === 'all' ? 'Vše' : STATUS_LABELS[s as ReservationStatus].label}
+                {s === 'all' ? 'V\u0161e' : STATUS_LABELS[s as ReservationStatus].label}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Table */}
-        <div className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-hidden mb-8">
           {loading ? (
-            <div className="p-12 text-center text-stone-400">Načítám…</div>
+            <div className="p-12 text-center text-stone-400">Na\u010dítám\u2026</div>
           ) : filtered.length === 0 ? (
-            <div className="p-12 text-center text-stone-400">Žádné rezervace</div>
+            <div className="p-12 text-center text-stone-400">\u017dádné rezervace</div>
           ) : (
-            <table className="w-full">
-              <thead>
-                <tr className="text-left text-xs text-stone-500 uppercase tracking-wide bg-stone-50 border-b border-stone-100">
+            <table className="w-full text-left">
+              <thead className="bg-stone-50 border-b border-stone-100">
+                <tr className="text-xs font-semibold text-stone-500 uppercase tracking-wide">
                   <th className="px-4 py-3">Host</th>
-                  <th className="px-4 py-3">Příjezd</th>
+                  <th className="px-4 py-3">P\u0159íjezd</th>
                   <th className="px-4 py-3">Odjezd</th>
-                  <th className="px-4 py-3">Nocí</th>
+                  <th className="px-4 py-3">No\u010dí</th>
                   <th className="px-4 py-3">Cena</th>
                   <th className="px-4 py-3">Stav</th>
                   <th className="px-4 py-3"></th>
@@ -166,7 +167,7 @@ export default function ReservationsPage() {
                     <td className="px-4 py-3 text-sm text-stone-700">{formatDate(r.check_in)}</td>
                     <td className="px-4 py-3 text-sm text-stone-700">{formatDate(r.check_out)}</td>
                     <td className="px-4 py-3 text-sm text-stone-700">{r.nights}</td>
-                    <td className="px-4 py-3 text-sm font-medium text-stone-800">{formatPrice(r.total_price)}</td>
+                    <td className="px-4 py-3 text-sm font-medium text-stone-800">{formatPrice(getTotalWithFees(r))}</td>
                     <td className="px-4 py-3">
                       <span className={`text-xs px-2 py-1 rounded-full font-medium ${STATUS_LABELS[r.status].color}`}>
                         {STATUS_LABELS[r.status].label}
@@ -177,7 +178,7 @@ export default function ReservationsPage() {
                         className="text-xs text-green-700 hover:underline"
                         onClick={e => { e.stopPropagation(); setSelected(r) }}
                       >
-                        Detail →
+                        Detail &rarr;
                       </button>
                     </td>
                   </tr>
@@ -187,7 +188,6 @@ export default function ReservationsPage() {
           )}
         </div>
 
-        {/* Detail modal */}
         {selected && (
           <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setSelected(null)}>
             <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
@@ -198,12 +198,12 @@ export default function ReservationsPage() {
                     <div className="text-sm text-stone-500">{selected.guest_email}</div>
                     {selected.guest_phone && <div className="text-sm text-stone-500">{selected.guest_phone}</div>}
                   </div>
-                  <button onClick={() => setSelected(null)} className="text-stone-400 hover:text-stone-600">✕</button>
+                  <button onClick={() => setSelected(null)} className="text-stone-400 hover:text-stone-600">&times;</button>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 mb-6 text-sm">
                   <div className="bg-stone-50 rounded-lg p-3">
-                    <div className="text-stone-500 text-xs mb-1">Příjezd</div>
+                    <div className="text-stone-500 text-xs mb-1">P\u0159íjezd</div>
                     <div className="font-medium">{formatDate(selected.check_in)}</div>
                   </div>
                   <div className="bg-stone-50 rounded-lg p-3">
@@ -212,19 +212,32 @@ export default function ReservationsPage() {
                   </div>
                   <div className="bg-stone-50 rounded-lg p-3">
                     <div className="text-stone-500 text-xs mb-1">Osoby</div>
-                    <div className="font-medium">{selected.adults} dospělí, {selected.children} děti</div>
+                    <div className="font-medium">{selected.adults} dosp\u011blí, {selected.children} d\u011bti</div>
                   </div>
                   <div className="bg-stone-50 rounded-lg p-3">
-                    <div className="text-stone-500 text-xs mb-1">Nocí</div>
+                    <div className="text-stone-500 text-xs mb-1">No\u010dí</div>
                     <div className="font-medium">{selected.nights}</div>
                   </div>
-                  <div className="bg-stone-50 rounded-lg p-3">
-                    <div className="text-stone-500 text-xs mb-1">Cena celkem</div>
-                    <div className="font-bold text-green-800">{formatPrice(selected.total_price)}</div>
-                  </div>
-                  <div className="bg-stone-50 rounded-lg p-3">
-                    <div className="text-stone-500 text-xs mb-1">Záloha</div>
-                    <div className="font-medium">{formatPrice(selected.deposit_amount)}</div>
+                  <div className="bg-stone-50 rounded-lg p-3 col-span-2">
+                    <div className="text-stone-500 text-xs mb-2">P\u0159ehled ceny</div>
+                    <div className="space-y-1 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-stone-600">Ubytování ({selected.nights} nocí &times; {formatPrice(selected.price_per_night)})</span>
+                        <span>{formatPrice(selected.total_price)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-stone-600">Záv\u011bre\u010dný úklid</span>
+                        <span>{formatPrice(CLEANING_FEE)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-stone-600">City tax ({selected.adults} os. &times; {selected.nights} nocí &times; {CITY_TAX_PER_ADULT_PER_NIGHT} K\u010d)</span>
+                        <span>{formatPrice(CITY_TAX_PER_ADULT_PER_NIGHT * selected.adults * selected.nights)}</span>
+                      </div>
+                      <div className="flex justify-between font-bold text-green-800 border-t border-stone-200 pt-1 mt-1">
+                        <span>Celkem k úhrad\u011b</span>
+                        <span>{formatPrice(getTotalWithFees(selected))}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -234,7 +247,6 @@ export default function ReservationsPage() {
                   </div>
                 )}
 
-                {/* Status actions */}
                 <div className="border-t border-stone-100 pt-4 space-y-2">
                   <div className="text-xs font-medium text-stone-500 mb-3 uppercase tracking-wide">Akce</div>
                   <div className="grid grid-cols-2 gap-2">
@@ -245,33 +257,42 @@ export default function ReservationsPage() {
                           disabled={actionLoading}
                           className="bg-blue-600 text-white text-sm py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
                         >
-                          ✓ Potvrdit
+                          &#10003; Potvrdit
                         </button>
                         <button
-                          onClick={() => sendPaymentLink(selected)}
+                          onClick={() => updateStatus(selected.id, 'cancelled')}
                           disabled={actionLoading}
-                          className="bg-green-800 text-white text-sm py-2 rounded-lg hover:bg-green-900 disabled:opacity-50"
+                          className="bg-red-100 text-red-700 text-sm py-2 rounded-lg hover:bg-red-200 disabled:opacity-50"
                         >
-                          💳 Zaslat platbu
+                          Zamítnout
                         </button>
                       </>
                     )}
-                    {selected.status === 'confirmed' && (
+                    {(selected.status === 'confirmed' || selected.status === 'pending') && (
                       <button
                         onClick={() => sendPaymentLink(selected)}
                         disabled={actionLoading}
-                        className="bg-green-800 text-white text-sm py-2 rounded-lg col-span-2 hover:bg-green-900 disabled:opacity-50"
+                        className="bg-green-700 text-white text-sm py-2 rounded-lg hover:bg-green-800 disabled:opacity-50 col-span-2"
                       >
-                        💳 Zaslat platební odkaz
+                        Zaslat platební odkaz
+                      </button>
+                    )}
+                    {selected.status === 'paid' && (
+                      <button
+                        onClick={() => updateStatus(selected.id, 'completed')}
+                        disabled={actionLoading}
+                        className="bg-gray-100 text-gray-700 text-sm py-2 rounded-lg hover:bg-gray-200 disabled:opacity-50 col-span-2"
+                      >
+                        Ozna\u010dit jako dokon\u010denou
                       </button>
                     )}
                     {selected.status !== 'cancelled' && selected.status !== 'completed' && (
                       <button
-                        onClick={() => { if (confirm('Opravdu zrušit rezervaci?')) updateStatus(selected.id, 'cancelled') }}
+                        onClick={() => { if (confirm('Opravdu zru\u0161it rezervaci?')) updateStatus(selected.id, 'cancelled') }}
                         disabled={actionLoading}
-                        className="border border-red-200 text-red-600 text-sm py-2 rounded-lg hover:bg-red-50 disabled:opacity-50 col-span-2"
+                        className="bg-red-50 text-red-600 text-sm py-2 rounded-lg hover:bg-red-100 disabled:opacity-50 col-span-2"
                       >
-                        Zrušit rezervaci
+                        Zru\u0161it rezervaci
                       </button>
                     )}
                   </div>
@@ -280,7 +301,6 @@ export default function ReservationsPage() {
             </div>
           </div>
         )}
-
       </div>
     </div>
   )
