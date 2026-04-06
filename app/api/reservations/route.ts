@@ -8,7 +8,7 @@ import {
   sanitizeBookingInput, scanRequestForAttacks,
   logSecurityEvent, addSecurityHeaders,
 } from '../../../lib/security'
-import { sendBookingConfirmation, sendAdminNotification } from '../../../lib/email'
+import { sendBookingConfirmation, sendAdminNotification, sendBookingConfirmed, sendBookingCancelled } from '../../../lib/email'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -16,8 +16,24 @@ const supabase = createClient(
   { auth: { persistSession: false } }
 )
 
-const PRICE_PER_NIGHT = Number(process.env.PRICE_PER_NIGHT ?? 4500)
 const DEPOSIT_PERCENT = Number(process.env.DEPOSIT_PERCENT ?? 30)
+
+// Season pricing — must stay in sync with SEASONS in src/App.jsx
+const SEASONS = [
+  { months: [7, 8],         price: 7900 }, // TOP LÉTO
+  { months: [2],            price: 7900 }, // TOP ZIMA
+  { months: [1],            price: 6900 }, // ZIMA
+  { months: [6, 9],         price: 6500 }, // JARO / PODZIM
+  { months: [5, 10],        price: 6000 }, // VEDLEJŠÍ
+  { months: [4, 11, 12],    price: 5500 }, // MIMO SEZÓNU
+]
+const FALLBACK_PRICE = Number(process.env.PRICE_PER_NIGHT ?? 5500)
+
+function getSeasonPrice(date: Date): number {
+  const month = date.getMonth() + 1 // 1–12
+  const season = SEASONS.find(s => s.months.includes(month))
+  return season?.price ?? FALLBACK_PRICE
+}
 
 function corsHeaders(): Record<string, string> {
   return {
@@ -97,8 +113,9 @@ export async function POST(req: NextRequest) {
     if (conflict?.length)
       return addSecurityHeaders(NextResponse.json({ error: 'Termín je obsazen' }, { status: 409 }))
 
-    // Cena se počítá výhradně na serveru
-    const total_price = nights * PRICE_PER_NIGHT
+    // Cena se počítá výhradně na serveru podle sezóny
+    const price_per_night = getSeasonPrice(inDate)
+    const total_price = nights * price_per_night
     const deposit_amount = Math.round(total_price * DEPOSIT_PERCENT / 100)
 
     // Host
@@ -118,7 +135,7 @@ export async function POST(req: NextRequest) {
         guest_id: guestId ?? null, guest_name, guest_email,
         guest_phone: guest_phone ?? null, check_in, check_out,
         adults: Number(adults), children: Number(children ?? 0),
-        price_per_night: PRICE_PER_NIGHT, total_price, deposit_amount,
+        price_per_night, total_price, deposit_amount,
         status: 'pending', source: 'website', internal_notes: message ?? null,
       }).select().single()
 
@@ -126,9 +143,19 @@ export async function POST(req: NextRequest) {
       return addSecurityHeaders(NextResponse.json({ error: 'Chyba při vytváření rezervace' }, { status: 500 }))
 
     // Emaily async
+    const adultsNum = Number(adults)
+    const cleaningFee = 2300
+    const cityTax = 50 * adultsNum * nights
+    const totalWithFees = total_price + cleaningFee + cityTax
+    const adminMsg =
+      `${guest_name} | ${check_in} → ${check_out} | ${nights} nocí | ${adultsNum} os.\n` +
+      `Ubytování: ${total_price.toLocaleString()} Kč\n` +
+      `Závěrečný úklid: ${cleaningFee.toLocaleString()} Kč\n` +
+      `City tax: ${cityTax.toLocaleString()} Kč\n` +
+      `CELKEM: ${totalWithFees.toLocaleString()} Kč | Záloha: ${deposit_amount.toLocaleString()} Kč`
     const emailResults = await Promise.allSettled([
   sendBookingConfirmation(reservation),
-  sendAdminNotification(reservation, `Rezervace - ${guest_name}`, `${guest_name} | ${check_in} - ${check_out} | ${total_price.toLocaleString()} Kc`),
+  sendAdminNotification(reservation, `Rezervace - ${guest_name}`, adminMsg.replace(/\n/g, '<br>')),
 ]);
 console.error('[reservations] email results', JSON.stringify(emailResults));
 
@@ -150,6 +177,34 @@ export async function GET() {
     .order('check_in', { ascending: false })
   if (error) return addSecurityHeaders(NextResponse.json({ error: error.message }, { status: 500 }))
   return addSecurityHeaders(NextResponse.json(data))
+}
+
+export async function PATCH(req: NextRequest) {
+  let body: { id?: string; status?: string }
+  try { body = await req.json() } catch { return addSecurityHeaders(NextResponse.json({ error: 'Neplatný JSON' }, { status: 400 })) }
+
+  const { id, status } = body
+  if (!id || !['confirmed', 'cancelled'].includes(status ?? ''))
+    return addSecurityHeaders(NextResponse.json({ error: 'Neplatné parametry' }, { status: 400 }))
+
+  const { data: reservation, error } = await supabase
+    .from('reservations')
+    .update({ status })
+    .eq('id', id)
+    .select()
+    .single()
+
+  if (error || !reservation)
+    return addSecurityHeaders(NextResponse.json({ error: error?.message ?? 'Chyba' }, { status: 500 }))
+
+  // Notifikační email hostovi
+  if (status === 'confirmed') {
+    await sendBookingConfirmed(reservation).catch(e => console.error('[email confirmed]', e))
+  } else if (status === 'cancelled') {
+    await sendBookingCancelled(reservation).catch(e => console.error('[email cancelled]', e))
+  }
+
+  return addSecurityHeaders(NextResponse.json({ success: true, reservation }))
 }
 
 export async function PUT() { return new NextResponse(null, { status: 405 }) }

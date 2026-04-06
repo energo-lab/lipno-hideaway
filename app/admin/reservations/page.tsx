@@ -27,6 +27,14 @@ function formatPrice(n: number) {
   return n.toLocaleString('cs-CZ') + ' Kč'
 }
 
+const CLEANING_FEE = 2300
+const CITY_TAX_PER_ADULT_PER_NIGHT = 50
+
+function getTotalWithFees(r: Reservation): number {
+  const cityTax = CITY_TAX_PER_ADULT_PER_NIGHT * r.adults * r.nights
+  return r.total_price + CLEANING_FEE + cityTax
+}
+
 export default function ReservationsPage() {
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [loading, setLoading] = useState(true)
@@ -76,13 +84,13 @@ export default function ReservationsPage() {
     setActionLoading(false)
   }
 
-  // Stats
+  // Stats — počítá se pouze ze zaplacených rezervací (paid, completed)
+  const paidReservations = reservations.filter(r => (['paid', 'completed'] as string[]).includes(r.status))
   const stats = {
-    total: reservations.length,
+    total: paidReservations.length,
     pending: reservations.filter(r => r.status === 'pending').length,
-    confirmed: reservations.filter(r => r.status === 'confirmed').length,
     paid: reservations.filter(r => r.status === 'paid').length,
-    revenue: reservations.filter(r => ['paid', 'completed'].includes(r.status)).reduce((s, r) => s + r.total_price, 0),
+    revenue: paidReservations.reduce((s, r) => s + getTotalWithFees(r), 0),
   }
 
   return (
@@ -98,7 +106,7 @@ export default function ReservationsPage() {
         {/* Stats cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           {[
-            { label: 'Celkem', value: stats.total, color: 'bg-white' },
+            { label: 'Potvrzeno', value: stats.total, color: 'bg-white' },
             { label: 'Čeká', value: stats.pending, color: 'bg-yellow-50', badge: stats.pending > 0 },
             { label: 'Zaplaceno', value: stats.paid, color: 'bg-green-50' },
             { label: 'Příjmy', value: formatPrice(stats.revenue), color: 'bg-blue-50' },
@@ -166,7 +174,7 @@ export default function ReservationsPage() {
                     <td className="px-4 py-3 text-sm text-stone-700">{formatDate(r.check_in)}</td>
                     <td className="px-4 py-3 text-sm text-stone-700">{formatDate(r.check_out)}</td>
                     <td className="px-4 py-3 text-sm text-stone-700">{r.nights}</td>
-                    <td className="px-4 py-3 text-sm font-medium text-stone-800">{formatPrice(r.total_price)}</td>
+                    <td className="px-4 py-3 text-sm font-medium text-stone-800">{formatPrice(getTotalWithFees(r))}</td>
                     <td className="px-4 py-3">
                       <span className={`text-xs px-2 py-1 rounded-full font-medium ${STATUS_LABELS[r.status].color}`}>
                         {STATUS_LABELS[r.status].label}
@@ -218,13 +226,30 @@ export default function ReservationsPage() {
                     <div className="text-stone-500 text-xs mb-1">Nocí</div>
                     <div className="font-medium">{selected.nights}</div>
                   </div>
-                  <div className="bg-stone-50 rounded-lg p-3">
-                    <div className="text-stone-500 text-xs mb-1">Cena celkem</div>
-                    <div className="font-bold text-green-800">{formatPrice(selected.total_price)}</div>
-                  </div>
-                  <div className="bg-stone-50 rounded-lg p-3">
-                    <div className="text-stone-500 text-xs mb-1">Záloha</div>
-                    <div className="font-medium">{formatPrice(selected.deposit_amount)}</div>
+                  <div className="bg-stone-50 rounded-lg p-3 col-span-2">
+                    <div className="text-stone-500 text-xs mb-2">Přehled ceny</div>
+                    <div className="space-y-1 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-stone-600">Ubytování ({selected.nights} nocí × {formatPrice(selected.price_per_night)})</span>
+                        <span>{formatPrice(selected.total_price)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-stone-600">Závěrečný úklid</span>
+                        <span>{formatPrice(CLEANING_FEE)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-stone-600">City tax ({selected.adults} os. × {selected.nights} nocí × {CITY_TAX_PER_ADULT_PER_NIGHT} Kč)</span>
+                        <span>{formatPrice(CITY_TAX_PER_ADULT_PER_NIGHT * selected.adults * selected.nights)}</span>
+                      </div>
+                      <div className="flex justify-between font-bold text-green-800 border-t border-stone-200 pt-1 mt-1">
+                        <span>Celkem k úhradě</span>
+                        <span>{formatPrice(getTotalWithFees(selected))}</span>
+                      </div>
+                      <div className="flex justify-between text-stone-500 text-xs pt-1">
+                        <span>Záloha (30 %)</span>
+                        <span>{formatPrice(selected.deposit_amount)}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
 

@@ -105,22 +105,18 @@ E-mail: <a href="mailto:info@lipno20.cz" class="text-[#C4654A] underline">info@l
     </thead>
     <tbody>
       <tr class="border-t border-[#EDE7DC]">
-        <td class="px-4 py-3">Více než 60 dní</td>
+        <td class="px-4 py-3">Více než 30 dní</td>
         <td class="px-4 py-3 text-right font-semibold text-green-700">Zdarma (vrácení celé zálohy)</td>
       </tr>
       <tr class="border-t border-[#EDE7DC] bg-[#FAF7F2]">
-        <td class="px-4 py-3">31 – 60 dní</td>
-        <td class="px-4 py-3 text-right font-semibold text-amber-600">30 % z ceny pobytu</td>
+        <td class="px-4 py-3">30 – 15 dní</td>
+        <td class="px-4 py-3 text-right font-semibold text-amber-600">10 % z ceny pobytu</td>
       </tr>
       <tr class="border-t border-[#EDE7DC]">
-        <td class="px-4 py-3">15 – 30 dní</td>
-        <td class="px-4 py-3 text-right font-semibold text-[#C4654A]">50 % z ceny pobytu</td>
+        <td class="px-4 py-3">15 – 10 dní</td>
+        <td class="px-4 py-3 text-right font-semibold text-[#C4654A]">30 % z ceny pobytu</td>
       </tr>
       <tr class="border-t border-[#EDE7DC] bg-[#FAF7F2]">
-        <td class="px-4 py-3">11 – 14 dní</td>
-        <td class="px-4 py-3 text-right font-semibold text-red-600">75 % z ceny pobytu</td>
-      </tr>
-      <tr class="border-t border-[#EDE7DC]">
         <td class="px-4 py-3">10 dní a méně / nenastoupení bez omluvy</td>
         <td class="px-4 py-3 text-right font-semibold text-red-700">100 % z ceny pobytu</td>
       </tr>
