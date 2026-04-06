@@ -152,7 +152,7 @@ export async function POST(req: NextRequest) {
       `Ubytování: ${total_price.toLocaleString()} Kč\n` +
       `Závěrečný úklid: ${cleaningFee.toLocaleString()} Kč\n` +
       `City tax: ${cityTax.toLocaleString()} Kč\n` +
-      `CELKEM: ${totalWithFees.toLocaleString()} Kč | Záloha: ${deposit_amount.toLocaleString()} Kč`
+      `<strong>CELKEM: ${totalWithFees.toLocaleString()} Kč</strong>`
     const emailResults = await Promise.allSettled([
   sendBookingConfirmation(reservation),
   sendAdminNotification(reservation, `Rezervace - ${guest_name}`, adminMsg.replace(/\n/g, '<br>')),
@@ -211,8 +211,4 @@ export async function PUT() { return new NextResponse(null, { status: 405 }) }
 
 export async function DELETE(req: NextRequest) {
   const id = new URL(req.url).searchParams.get('id')
-  if (!id) return addSecurityHeaders(NextResponse.json({ error: 'Missing id' }, { status: 400 }))
-  const { error } = await supabase.from('reservations').delete().eq('id', id)
-  if (error) return addSecurityHeaders(NextResponse.json({ error: error.message }, { status: 500 }))
-  return addSecurityHeaders(NextResponse.json({ success: true }))
-}
+  if (!id) return addSecurityHeaders(NextResponse.json({ error: 'Missing id' }, { s
