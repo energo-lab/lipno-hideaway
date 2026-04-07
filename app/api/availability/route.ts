@@ -1,8 +1,10 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { addSecurityHeaders } from '../../../lib/security'
+import { unstable_noStore as noStore } from 'next/cache'
 
 export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -10,7 +12,9 @@ const supabase = createClient(
   { auth: { persistSession: false } }
 )
 
-export async function GET() {
+export async function GET(_req: NextRequest) {
+  noStore()
+
   const { data: reservations } = await supabase
     .from('reservations')
     .select('check_in, check_out')
@@ -24,6 +28,8 @@ export async function GET() {
     reservations: reservations || [],
     blocked: blocked || [],
   })
-  res.headers.set('Cache-Control', 'no-store, max-age=0')
+  res.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+  res.headers.set('Surrogate-Control', 'no-store')
+  res.headers.set('CDN-Cache-Control', 'no-store')
   return addSecurityHeaders(res)
 }
