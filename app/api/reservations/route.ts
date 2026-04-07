@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic'
 import {
   checkRateLimit, rateLimitResponse, getClientIp,
   sanitizeBookingInput, scanRequestForAttacks,
-  logSecurityEvent, addSecurityHeaders,
+  logSecurityEvent, addSecurityHeaders, validateAdminAuth,
 } from '../../../lib/security'
 import { sendBookingConfirmation, sendAdminNotification, sendBookingConfirmed, sendBookingCancelled } from '../../../lib/email'
 
@@ -182,6 +182,9 @@ export async function GET() {
 }
 
 export async function PATCH(req: NextRequest) {
+  if (!await validateAdminAuth(req))
+    return addSecurityHeaders(NextResponse.json({ error: 'Neautorizováno' }, { status: 401 }))
+
   let body: { id?: string; status?: string }
   try { body = await req.json() } catch { return addSecurityHeaders(NextResponse.json({ error: 'Neplatný JSON' }, { status: 400 })) }
 
@@ -212,6 +215,9 @@ export async function PATCH(req: NextRequest) {
 export async function PUT() { return new NextResponse(null, { status: 405 }) }
 
 export async function DELETE(req: NextRequest) {
+  if (!await validateAdminAuth(req))
+    return addSecurityHeaders(NextResponse.json({ error: 'Neautorizováno' }, { status: 401 }))
+
   const id = new URL(req.url).searchParams.get('id')
   if (!id) return addSecurityHeaders(NextResponse.json({ error: 'Missing id' }, { status: 400 }))
   const { error } = await supabase.from('reservations').delete().eq('id', id)

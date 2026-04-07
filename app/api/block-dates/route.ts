@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import { addSecurityHeaders } from '../../../lib/security'
+import { addSecurityHeaders, validateAdminAuth } from '../../../lib/security'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -9,6 +9,9 @@ const supabase = createClient(
 )
 
 export async function POST(req: NextRequest) {
+  if (!await validateAdminAuth(req))
+    return addSecurityHeaders(NextResponse.json({ error: 'Neautorizováno' }, { status: 401 }))
+
   const { date_from, date_to, reason } = await req.json()
   const { data, error } = await supabase
     .from('blocked_dates')
@@ -19,6 +22,9 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  if (!await validateAdminAuth(req))
+    return addSecurityHeaders(NextResponse.json({ error: 'Neautorizováno' }, { status: 401 }))
+
   const id = new URL(req.url).searchParams.get('id')
   if (!id || id === 'undefined' || id === 'null') {
     return addSecurityHeaders(NextResponse.json({ error: 'Missing or invalid id' }, { status: 400 }))

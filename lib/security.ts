@@ -1,4 +1,5 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
 
 const seen = new Set<string>()
 const rlMap = new Map<string, { count: number; resetAt: Date }>()
@@ -71,4 +72,20 @@ export function sanitizeBookingInput(body: Record<string, unknown>): { safe: Rec
 export function scanRequestForAttacks(body: Record<string, unknown>): boolean {
   const s = JSON.stringify(body).toLowerCase()
   return ['<script','javascript:','onload=','drop table','../','etc/passwd'].some(p => s.includes(p))
+}
+
+export async function validateAdminAuth(req: NextRequest): Promise<boolean> {
+  const auth = req.headers.get('authorization')
+  if (!auth || !auth.startsWith('Bearer ')) return false
+  const token = auth.slice(7)
+  try {
+    const supabaseAuth = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+    const { data: { user }, error } = await supabaseAuth.auth.getUser(token)
+    return !!user && !error
+  } catch {
+    return false
+  }
 }
