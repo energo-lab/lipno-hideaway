@@ -74,7 +74,32 @@ export async function POST(req: NextRequest) {
   try { rawBody = await req.json() }
   catch { return addSecurityHeaders(NextResponse.json({ error: 'Neplatný JSON' }, { status: 400 })) }
 
-  // 5. Detekce útoků
+  // 5. Cloudflare Turnstile ověření
+  const ttSecret = process.env.TURNSTILE_SECRET_KEY
+  if (ttSecret) {
+    const ttToken = String(rawBody.tt ?? '')
+    if (!ttToken) {
+      logSecurityEvent('TURNSTILE_MISSING', { ip })
+      return addSecurityHeaders(NextResponse.json({ error: 'Chybí ověření' }, { status: 403 }))
+    }
+    try {
+      const ttRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `secret=${ttSecret}&response=${ttToken}&remoteip=${ip}`,
+      })
+      const ttData = await ttRes.json() as { success: boolean }
+      if (!ttData.success) {
+        logSecurityEvent('TURNSTILE_FAIL', { ip })
+        return addSecurityHeaders(NextResponse.json({ error: 'Ověření selhalo, zkuste znovu' }, { status: 403 }))
+      }
+    } catch (e) {
+      logSecurityEvent('TURNSTILE_ERROR', { ip, error: String(e) })
+      // Pokud Turnstile API selže, propustit (fail open) — nechceme blokovat legitimní uživatele
+    }
+  }
+
+  // 5b. Detekce útoků
   if (scanRequestForAttacks(rawBody))
     return addSecurityHeaders(NextResponse.json({ error: 'Neplatný požadavek' }, { status: 400 }))
 
