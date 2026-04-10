@@ -136,7 +136,7 @@ const fdt = (s) => new Date(s).toLocaleDateString("cs-CZ");
    Replace # with your actual URLs
    ═══════════════════════════════════════════ */
 const SOCIAL_LINKS = {
-  instagram: "https://instagram.com/lipno_hideaway",  // ← váš Instagram
+  instagram: "https://instagram.com/lipno20.cz",  // ← váš Instagram
   facebook: "https://facebook.com/lipnohideaway",     // ← váš Facebook
   google: "https://g.page/r/YOUR_GOOGLE_ID/review",   // ← Google Business recenze
   booking: "https://booking.com/hotel/YOUR_ID",        // ← Booking.com
