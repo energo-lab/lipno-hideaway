@@ -64,7 +64,7 @@ export function sanitizeBookingInput(body: Record<string, unknown>): { safe: Rec
   for (const f of ['children','message','guest_phone']) {
     if (body[f] !== undefined) safe[f] = String(body[f]).slice(0, 500)
   }
-  if (safe.guest_email && !/^[^s@]+@[^s@]+.[^s@]+$/.test(safe.guest_email as string))
+  if (safe.guest_email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(safe.guest_email as string))
     errors.push('Neplatny email')
   return { safe, errors }
 }
