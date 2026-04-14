@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Blokuj admin panel před vyhledávači
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://www.lipno20.cz/sitemap.xml
