@@ -3,6 +3,7 @@
 // Admin reservation management dashboard
 
 import { useState, useEffect, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@supabase/supabase-js'
 import type { Reservation, ReservationStatus } from '@/lib/types'
 
@@ -36,12 +37,25 @@ function getTotalWithFees(r: Reservation): number {
 }
 
 export default function ReservationsPage() {
+  const router = useRouter()
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [loading, setLoading] = useState(true)
+  const [authChecked, setAuthChecked] = useState(false)
   const [filter, setFilter] = useState<ReservationStatus | 'all'>('all')
   const [search, setSearch] = useState('')
   const [selected, setSelected] = useState<Reservation | null>(null)
   const [actionLoading, setActionLoading] = useState(false)
+
+  // Auth guard — redirect to /admin if not logged in
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) {
+        router.replace('/admin')
+      } else {
+        setAuthChecked(true)
+      }
+    })
+  }, [router])
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -52,7 +66,7 @@ export default function ReservationsPage() {
     setLoading(false)
   }, [filter])
 
-  useEffect(() => { load() }, [load])
+  useEffect(() => { if (authChecked) load() }, [load, authChecked])
 
   const filtered = reservations.filter(r =>
     !search || r.guest_name.toLowerCase().includes(search.toLowerCase()) ||
@@ -88,6 +102,11 @@ export default function ReservationsPage() {
     pending: reservations.filter(r => r.status === 'pending').length,
     paid: reservations.filter(r => r.status === 'paid').length,
     revenue: paidReservations.reduce((s, r) => s + getTotalWithFees(r), 0),
+  }
+
+  // Nezobrazovat nic dokud není auth ověřena
+  if (!authChecked) {
+    return <div className="min-h-screen bg-stone-50 flex items-center justify-center text-stone-400">Ověřuji přístup…</div>
   }
 
   return (

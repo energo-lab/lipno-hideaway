@@ -197,7 +197,10 @@ console.error('[reservations] email results', JSON.stringify(emailResults));
   }
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  if (!await validateAdminAuth(req))
+    return addSecurityHeaders(NextResponse.json({ error: 'Neautorizováno' }, { status: 401 }))
+
   const { data, error } = await supabase
     .from('reservations')
     .select('*')
