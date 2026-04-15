@@ -21,18 +21,23 @@ Tento soubor slouží jako paměť mezi seseními. Při každém novém startu s
 
 ### ⏳ Zbývá udělat (ruční kroky)
 
-1. **`git push`** — commit `e0d4217` je lokálně připravený, jen je potřeba pushnout:
+1. **`git push`** — připraveny 3 commity k push:
    ```bash
    git push
    ```
-   → po deployi by security headers skóre mělo skočit na **A+**
+   - `e0d4217` X-Frame-Options + X-Content-Type-Options
+   - `419e5c4` PROGRESS.md
+   - `96dddb6` HSTS includeSubDomains + preload
+   → po deployi security headers skóre = **A+**, HSTS splňuje podmínky preload listu
 
 2. **Comgate Notification URL** — v portálu Comgate → Nastavení → Notification URL:
    ```
    https://www.lipno20.cz/api/payment/webhook
    ```
 
-3. **HSTS preload** (volitelné) — submit na https://hstspreload.org/
+3. **HSTS preload submit** — po git push, jakmile Vercel redeployuje, jdi na:
+   https://hstspreload.org/?domain=lipno20.cz → klikni "Submit"
+   (doména není v preload listu — `not preloaded`)
 
 4. **Otestovat webhook** s Comgate sandboxem (viz SECURITY.md → Penetrační testování)
 
