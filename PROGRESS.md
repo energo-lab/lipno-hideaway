@@ -21,25 +21,29 @@ Tento soubor slouží jako paměť mezi seseními. Při každém novém startu s
 
 ### ⏳ Zbývá udělat (ruční kroky)
 
-1. **`git push`** — připraveny 3 commity k push:
+1. **`git push`** — připraveny commity k push (spusť ve Windows terminálu v adresáři projektu):
    ```bash
    git push
    ```
    - `e0d4217` X-Frame-Options + X-Content-Type-Options
    - `419e5c4` PROGRESS.md
    - `96dddb6` HSTS includeSubDomains + preload
-   → po deployi security headers skóre = **A+**, HSTS splňuje podmínky preload listu
+   - `bb48932` bare domain redirect přes Next.js (fix pro HSTS preload)
 
-2. **Comgate Notification URL** — v portálu Comgate → Nastavení → Notification URL:
+2. **Vercel Dashboard → Domains**: po deployi ověřit, že `lipno20.cz` (bez www) je přidána
+   jako doména projektu (ne jen externí přesměrování). Jinak `redirects()` v next.config.js
+   nebude mít odkud zachytit provoz.
+   → Vercel Dashboard → Project → Settings → Domains → přidat `lipno20.cz`
+
+3. **Comgate Notification URL** — v portálu Comgate → Nastavení → Notification URL:
    ```
    https://www.lipno20.cz/api/payment/webhook
    ```
 
-3. **HSTS preload submit** — po git push, jakmile Vercel redeployuje, jdi na:
+4. **HSTS preload submit** — po deployi a ověření bare domény:
    https://hstspreload.org/?domain=lipno20.cz → klikni "Submit"
-   (doména není v preload listu — `not preloaded`)
 
-4. **Otestovat webhook** s Comgate sandboxem (viz SECURITY.md → Penetrační testování)
+5. **Otestovat webhook** s Comgate sandboxem (viz SECURITY.md → Penetrační testování)
 
 ---
 
