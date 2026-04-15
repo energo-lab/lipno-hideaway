@@ -40,8 +40,12 @@ Tento soubor slouží jako paměť mezi seseními. Při každém novém startu s
    https://www.lipno20.cz/api/payment/webhook
    ```
 
-4. **HSTS preload submit** — po deployi a ověření bare domény:
-   https://hstspreload.org/?domain=lipno20.cz → klikni "Submit"
+4. **HSTS preload** — ⚠️ Known limitation (Vercel Hobby):
+   - `lipno20.cz` musí být redirect (Hobby neumí 2 domény na environment)
+   - Vercel's 308 redirect přidává HSTS bez `includeSubDomains; preload`
+   - hstspreload.org proto odmítá submit
+   - Řešení: Vercel Pro upgrade ($20/mo), nebo akceptovat (www HSTS funguje)
+   - HSTS preloading není kritická zranitelnost, jen nice-to-have
 
 5. **Otestovat webhook** s Comgate sandboxem (viz SECURITY.md → Penetrační testování)
 
