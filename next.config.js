@@ -12,6 +12,17 @@ const csp = [
 ].join('; ')
 
 module.exports = {
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'lipno20.cz' }],
+        destination: 'https://www.lipno20.cz/:path*',
+        permanent: true,
+      },
+    ]
+  },
+
   async headers() {
     return [{
       source: "/(.*)",
