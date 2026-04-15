@@ -35,10 +35,7 @@ Tento soubor slouží jako paměť mezi seseními. Při každém novém startu s
    nebude mít odkud zachytit provoz.
    → Vercel Dashboard → Project → Settings → Domains → přidat `lipno20.cz`
 
-3. **Comgate Notification URL** — v portálu Comgate → Nastavení → Notification URL:
-   ```
-   https://www.lipno20.cz/api/payment/webhook
-   ```
+3. ~~**Comgate Notification URL**~~ — **zrušeno**, platby nejsou integrovány do webu. Platební link se zasílá ručně po potvrzení rezervace.
 
 4. **HSTS preload** — ⚠️ Known limitation (Vercel Hobby):
    - `lipno20.cz` musí být redirect (Hobby neumí 2 domény na environment)
@@ -46,8 +43,6 @@ Tento soubor slouží jako paměť mezi seseními. Při každém novém startu s
    - hstspreload.org proto odmítá submit
    - Řešení: Vercel Pro upgrade ($20/mo), nebo akceptovat (www HSTS funguje)
    - HSTS preloading není kritická zranitelnost, jen nice-to-have
-
-5. **Otestovat webhook** s Comgate sandboxem (viz SECURITY.md → Penetrační testování)
 
 ---
 
