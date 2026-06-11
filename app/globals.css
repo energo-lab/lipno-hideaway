@@ -1,13 +1,62 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { font-family: 'DM Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
-::selection { background: rgba(196,101,74,0.2); color: #1B2B22; }
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #FAF7F2; }
-::-webkit-scrollbar-thumb { background: #D4DDD6; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #A8B8AB; }
+body {
+  font-family: 'Jost', system-ui, sans-serif;
+  font-weight: 300;
+  background: #F7F5EF;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: #C9A55C; color: #0B160C; }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #0B160C; }
+::-webkit-scrollbar-thumb { background: #2E5233; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #C9A55C; }
+
+/* ── scroll progress bar (mounted by useFx) ── */
+#lhProgress {
+  position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+  background: linear-gradient(90deg, #C9A55C, #E4CB95);
+  z-index: 1000; transition: width .1s linear; pointer-events: none;
+}
+
+/* ── reveal on scroll ── */
+.reveal {
+  opacity: 0; transform: translateY(46px);
+  transition: opacity 1s cubic-bezier(.22,1,.36,1), transform 1s cubic-bezier(.22,1,.36,1);
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ── hero entrance ── */
+.lh-up { opacity: 0; animation: lhFadeUp 1.3s cubic-bezier(.22,1,.36,1) forwards; }
+@keyframes lhFadeUp { from { opacity: 0; transform: translateY(34px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes lhFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes lhPulse {
+  0%, 100% { opacity: .4; transform: scaleY(.6); transform-origin: top; }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+/* ── outlined drifting watermark ── */
+.lh-watermark {
+  position: absolute;
+  font-family: 'Marcellus', serif;
+  font-size: clamp(8rem, 22vw, 19rem);
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(46, 82, 51, 0.14);
+  white-space: nowrap;
+  pointer-events: none; user-select: none;
+  z-index: 0; line-height: 1; will-change: transform;
+}
+
+[data-speed], [data-drift] { will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .lh-up { opacity: 1; animation: none; }
+  * { animation-duration: .01ms !important; transition-duration: .2s !important; }
+}
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
- 
