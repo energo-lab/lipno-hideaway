@@ -98,7 +98,7 @@ const ACTIVITIES = [
 
 const DEMO_REVIEWS = [
   { name:"Petr & Klára", rating:5, text:{cs:"Úžasný dům s nádherným výhledem. Vybavení na nejvyšší úrovni, děti si užily zahradu.",en:"Amazing house with stunning views. Top amenities, kids loved the garden.",de:"Erstaunliches Haus mit atemberaubendem Blick. Wir kommen wieder!",nl:"Geweldig huis met prachtig uitzicht. We komen zeker terug!"}, date:"Srpen 2025" },
-  { name:"Hans & Greta M.", rating:5, text:{cs:"Perfektní lokace, klid a pohoda. Dům je čistý a moderní.",en:"Perfect location, peace and quiet. Clean and modern.",de:"Perfekte Lage, Ruhe und Erholung. Sauber und modern.",nl:"Perfecte locatie, rust en ontspanning."}, date:"Juli 2025" },
+  { name:"Hans & Greta M.", rating:5, text:{cs:"Perfektní lokace, klid a pohoda. Dům je čistý a dobře vybavený.",en:"Perfect location, peace and quiet. Clean and modern.",de:"Perfekte Lage, Ruhe und Erholung. Sauber und modern.",nl:"Perfecte locatie, rust en ontspanning."}, date:"Juli 2025" },
   { name:"Jan & Marie", rating:4, text:{cs:"Skvělá dovolená s rodinou. Blízko ski areálu i stezky korunami stromů.",en:"Great family vacation. Close to ski resort and treetop walkway.",de:"Toller Familienurlaub nahe dem Skigebiet.",nl:"Geweldige familievakantie."}, date:"Únor 2025" },
   { name:"Familie de Vries", rating:5, text:{cs:"Nejlepší ubytování na Lipně. Vše v ceně, žádné překvapení.",en:"Best accommodation at Lipno. Everything included.",de:"Beste Unterkunft am Lipno. Alles inklusive.",nl:"Beste accommodatie bij Lipno. Alles inbegrepen."}, date:"Aug 2025" },
 ];
