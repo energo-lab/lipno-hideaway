@@ -79,7 +79,7 @@ const useT = () => { const { lang } = useLang(); return useCallback((p) => p.spl
 
 const SEASONS = [
   { id:"top_summer", months:[7,8], price:5600, minNights:2, label:{cs:"TOP LÉTO",en:"PEAK SUMMER",de:"HOCHSOMMER",nl:"TOPZOMER"}, period:{cs:"Červenec – Srpen",en:"July – August",de:"Juli – August",nl:"Juli – Augustus"} },
-  { id:"top_winter", months:[2], price:7900, minNights:2, label:{cs:"TOP ZIMA",en:"PEAK WINTER",de:"HOCHWINTER",nl:"TOPWINTER"}, period:{cs:"Únor – pol. března",en:"Feb – mid March",de:"Feb – Mitte März",nl:"Feb – half maart"} },
+  { id:"top_winter", months:[2], price:5600, minNights:2, label:{cs:"TOP ZIMA",en:"PEAK WINTER",de:"HOCHWINTER",nl:"TOPWINTER"}, period:{cs:"Únor – pol. března",en:"Feb – mid March",de:"Feb – Mitte März",nl:"Feb – half maart"} },
   { id:"winter", months:[1], price:4900, minNights:3, label:{cs:"ZIMA",en:"WINTER",de:"WINTER",nl:"WINTER"}, period:{cs:"Leden",en:"January",de:"Januar",nl:"Januari"} },
   { id:"shoulder", months:[6,9], price:4900, minNights:3, label:{cs:"JARO / PODZIM",en:"SHOULDER",de:"NEBENSAISON",nl:"TUSSENSEIZOEN"}, period:{cs:"Červen, Září",en:"June, Sept",de:"Juni, Sept",nl:"Juni, Sept"} },
   { id:"off_shoulder", months:[5,10], price:6000, minNights:2, label:{cs:"VEDLEJŠÍ",en:"LOW SEASON",de:"RANDSAISON",nl:"LAAGSEIZOEN"}, period:{cs:"Květen, Říjen",en:"May, October",de:"Mai, Okt",nl:"Mei, Okt"} },
